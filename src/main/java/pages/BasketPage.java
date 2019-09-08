@@ -1,11 +1,13 @@
 package pages;
 
 import com.aplana.DNS.Trash;
+import com.google.common.base.Function;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 
 
 public class BasketPage extends BasePage {
@@ -22,6 +24,7 @@ public class BasketPage extends BasePage {
     @FindBy(xpath = "//div[@class='total-amount__info-block']//span[.='27 309']")
     WebElement fullPriceElement;
     @FindBy(xpath = "//a[.='Игра  Detroit: Стать человеком (PS4)']")
+    public static
     WebElement isGame;
     @FindBy(xpath = "//i[@class='count-buttons__icon-plus']")
     WebElement plusButton;
@@ -54,7 +57,7 @@ public class BasketPage extends BasePage {
     public int getFullPrice(){
         return Integer.parseInt(fullPriceElement.getText().replace(" ",""));
     }
-    public boolean isGameFalse(){
+    public static boolean isGameFalse(){
         try {
 
             if (isGame.isEnabled()) {
@@ -78,4 +81,6 @@ public class BasketPage extends BasePage {
     public void clickBackButton(){
         backButton.click();
     }
+
+
 }

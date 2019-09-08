@@ -29,9 +29,12 @@ package com.aplana.DNS;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import pages.BasketPage;
 import pages.MainPage;
 import pages.ProductCard;
@@ -58,11 +61,9 @@ public class DnsTest {
     public void checkPS() throws InterruptedException {
         MainPage mainPage = new MainPage();
         mainPage.sendMessage("playstation");
-
+        WebDriverWait wait = new WebDriverWait(driver, 6, 1000);
         ResultsPage resultsPage = new ResultsPage();
         resultsPage.chooseProduct("PlayStation 4 Slim Black 1 TB");
-
-
         ProductCard productCard = new ProductCard();
         productCard.savePriceOfCurrentProduct("playstation");
         productCard.selectWarranty1("2 года");
@@ -71,7 +72,7 @@ public class DnsTest {
         mainPage.sendMessage("Detroit\n");
         productCard.savePriceOfCurrentProduct("game");
         productCard.buyButtonClick();
-        Thread.sleep(1000);
+        wait.until(mainPage.valueChanged);
         assertEquals("цена корзины не  равна сумме покупок", Trash.summa(), mainPage.getTotalPrice());
         mainPage.goToBasket();
         BasketPage basketPage = new BasketPage();
@@ -80,15 +81,16 @@ public class DnsTest {
         assertEquals("цена игры не совпадает", Integer.parseInt(Trash.get("game")), basketPage.getPriceOfGame());
         assertEquals("цена корзины не  равна сумме покупок", Trash.summa(), basketPage.getFullPrice());
         basketPage.doRemoveGame();
-        Thread.sleep(1000);
+        wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//a[.='Игра  Detroit: Стать человеком (PS4)']"), 0));
         assertEquals("Detroit всё ещё в корзине", false, basketPage.isGameFalse());
         assertEquals("сумма уменьшилась на цену Detroit", Integer.parseInt(Trash.get("game")), Trash.summa()-Integer.parseInt(Trash.get("playstation")));
         basketPage.clickPlusButton();
-        Thread.sleep(4000);
+        wait.until(mainPage.valueChanged2PS);
         basketPage.clickPlusButton();
-        Thread.sleep(3000);
+        wait.until(mainPage.valueChanged3PS);
         assertEquals("сумма не равная трем PS", Integer.parseInt(Trash.get("playstation"))*3, mainPage.getTotalPrice());
         basketPage.clickBackButton();
+        wait.until(mainPage.valueChanged3PSAndGame);
         assertEquals("Detroit нет в корзине", true, basketPage.isGameFalse());
         assertEquals("сумма не увеличиласть на стоимость Detroit", Integer.parseInt(Trash.get("playstation"))*3+Integer.parseInt(Trash.get("game")), mainPage.getTotalPrice());
     }
