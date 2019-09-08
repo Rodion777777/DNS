@@ -24,7 +24,6 @@ public class BasketPage extends BasePage {
     @FindBy(xpath = "//div[@class='total-amount__info-block']//span[.='27 309']")
     WebElement fullPriceElement;
     @FindBy(xpath = "//a[.='Игра  Detroit: Стать человеком (PS4)']")
-    public static
     WebElement isGame;
     @FindBy(xpath = "//i[@class='count-buttons__icon-plus']")
     WebElement plusButton;
@@ -57,23 +56,10 @@ public class BasketPage extends BasePage {
     public int getFullPrice(){
         return Integer.parseInt(fullPriceElement.getText().replace(" ",""));
     }
-    public static boolean isGameFalse(){
-        try {
-
-            if (isGame.isEnabled()) {
-
-                return true;
-
-            } else {
-
-                return false;
-            }
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
-            return false;
-        }
+    public  boolean isGameFalse(){
+        if (driver.findElements(By.xpath("//a[.='Игра  Detroit: Стать человеком (PS4)']")).isEmpty()){
+            return true;}
+        else return false;
     }
     public void clickPlusButton(){
             plusButton.click();

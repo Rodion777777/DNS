@@ -82,7 +82,7 @@ public class DnsTest {
         assertEquals("цена корзины не  равна сумме покупок", Trash.summa(), basketPage.getFullPrice());
         basketPage.doRemoveGame();
         wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//a[.='Игра  Detroit: Стать человеком (PS4)']"), 0));
-        assertEquals("Detroit всё ещё в корзине", false, basketPage.isGameFalse());
+        assertEquals("Detroit всё ещё в корзине", true, basketPage.isGameFalse());
         assertEquals("сумма уменьшилась на цену Detroit", Integer.parseInt(Trash.get("game")), Trash.summa()-Integer.parseInt(Trash.get("playstation")));
         basketPage.clickPlusButton();
         wait.until(mainPage.valueChanged2PS);
@@ -90,8 +90,9 @@ public class DnsTest {
         wait.until(mainPage.valueChanged3PS);
         assertEquals("сумма не равная трем PS", Integer.parseInt(Trash.get("playstation"))*3, mainPage.getTotalPrice());
         basketPage.clickBackButton();
+        wait.until(ExpectedConditions.numberOfElementsToBe(By.xpath("//a[.='Игра  Detroit: Стать человеком (PS4)']"), 1));
         wait.until(mainPage.valueChanged3PSAndGame);
-        assertEquals("Detroit нет в корзине", true, basketPage.isGameFalse());
+        assertEquals("Detroit нет в корзине", false, basketPage.isGameFalse());
         assertEquals("сумма не увеличиласть на стоимость Detroit", Integer.parseInt(Trash.get("playstation"))*3+Integer.parseInt(Trash.get("game")), mainPage.getTotalPrice());
     }
     @After
